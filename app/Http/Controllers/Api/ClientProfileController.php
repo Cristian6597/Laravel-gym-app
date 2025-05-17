@@ -21,9 +21,6 @@ class ClientProfileController extends Controller
     {
         $query = ClientProfile::query();
 
-        if ($request->has('model')) {
-            $query->where('model', 'like', '%' . $request->model . '%');
-        }
 
         return ClientProfileResource::collection($query->paginate(10));
     }
