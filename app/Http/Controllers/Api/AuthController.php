@@ -42,7 +42,7 @@ class AuthController extends Controller
             ]);
         }
         $user = $request->user();
-        $token = $user->createToken('web-app', ['vehicles:create'])->plainTextToken;
+        $token = $user->createToken('web-app', ['users:create'])->plainTextToken;
 
         return response()->json([
             'user' => $user,
