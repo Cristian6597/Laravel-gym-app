@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ClientProfileController;
 use App\Http\Controllers\Api\ExerciseController;
 use App\Http\Controllers\Api\TrainerController;
+use App\Http\Controllers\Api\WorkoutPlanController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Hash;
@@ -31,3 +32,4 @@ Route::prefix('auth')->controller(AuthController::class)->group(function () {
 Route::apiResource('clients', ClientProfileController::class)->middleware('auth:sanctum');
 Route::apiResource('exercises', ExerciseController::class)->middleware('auth:sanctum');
 Route::apiResource('trainers', TrainerController::class)->middleware('auth:sanctum');
+Route::apiResource('workout-plans', WorkoutPlanController::class);

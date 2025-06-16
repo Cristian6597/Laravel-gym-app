@@ -10,7 +10,7 @@ class WorkoutPlanRepository
 
     public function save(Request $request)
     {
-        $workoutPlan = $request->user()->WorkoutPlans()->create($request->except('image', 'tags'));
+        $workoutPlan = $request->user()->workoutPlans()->create($request->except('image', 'tags'));
 
         // assegno i tags al veicolo creando un record nella pivot table tag_WorkoutPlan
         $workoutPlan->tags()->attach($request->tags, [

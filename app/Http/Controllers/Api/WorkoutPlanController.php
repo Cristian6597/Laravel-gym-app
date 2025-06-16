@@ -27,8 +27,16 @@ class WorkoutPlanController extends Controller
      */
     public function store(WorkoutPlanRequest $request)
     {
-        $workoutPlan = $this->workoutPlanService->create($request);
-        return new WorkoutPlanResource($workoutPlan);
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'client_id' => 'required|integer|exists:users,id',
+            'trainer_id' => 'required|integer|exists:users,id',
+            'general_notes' => 'nullable|string',
+        ]);
+
+        $workoutPlan = WorkoutPlan::create($validated);
+
+        return response()->json($workoutPlan, 201);
     }
 
     /**

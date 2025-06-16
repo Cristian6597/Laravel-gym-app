@@ -18,17 +18,17 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
-    
-    
+
+
     protected $fillable = [
         'first_name',
         'last_name',
         'email',
         'password',
     ];
-    
+
     protected $guarded = [];
-    
+
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -51,5 +51,17 @@ class User extends Authenticatable
             'password' => 'hashed',
             'role' => 'string',
         ];
+    }
+    // **Aggiungi questa relazione**
+    public function workoutPlans()
+    {
+        // Un utente (trainer) può avere molti workout plans
+        return $this->hasMany(WorkoutPlan::class, 'trainer_id');
+    }
+
+    // Se vuoi anche la relazione come client (se ti serve)
+    public function workoutPlansAsClient()
+    {
+        return $this->hasMany(WorkoutPlan::class, 'client_id');
     }
 }
