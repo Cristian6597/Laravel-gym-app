@@ -16,4 +16,10 @@ class Exercise extends Model
         'description',
         'muscles_involved',
     ];
+    public function workoutPlans()
+    {
+        return $this->belongsToMany(WorkoutPlan::class, 'workout_plan_exercises')
+            ->withPivot('sets', 'repetitions', 'load', 'notes')
+            ->withTimestamps();
+    }
 }

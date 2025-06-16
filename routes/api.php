@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\ClientProfileController;
 use App\Http\Controllers\Api\ExerciseController;
 use App\Http\Controllers\Api\TrainerController;
 use App\Http\Controllers\Api\WorkoutPlanController;
+use App\Http\Controllers\Api\WorkoutPlanHasExerciseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Hash;
@@ -33,3 +34,18 @@ Route::apiResource('clients', ClientProfileController::class)->middleware('auth:
 Route::apiResource('exercises', ExerciseController::class)->middleware('auth:sanctum');
 Route::apiResource('trainers', TrainerController::class)->middleware('auth:sanctum');
 Route::apiResource('workout-plans', WorkoutPlanController::class);
+Route::post('workout-plans/{workout_plan}/exercises', [WorkoutPlanHasExerciseController::class, 'store']);
+Route::get('/users', function (Request $request) {
+    $role = $request->query('role');
+
+    $query = User::query();
+
+    if ($role) {
+        $query->where('role', $role);
+    }
+
+    // Restituisci id, first_name e last_name per ridurre payload
+    $users = $query->select('id', 'first_name', 'last_name')->get();
+
+    return response()->json($users);
+});

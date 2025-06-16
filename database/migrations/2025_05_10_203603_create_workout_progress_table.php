@@ -13,7 +13,7 @@ return new class extends Migration {
         Schema::create('workout_progress', function (Blueprint $table) {
             $table->id();
             $table->foreignId('client_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('exercise_id')->constrained('exercises')->onDelete('cascade');
+            $table->string('name');
             $table->date('date');
             $table->integer('sets_completed')->nullable();
             $table->integer('total_repetitions')->nullable();

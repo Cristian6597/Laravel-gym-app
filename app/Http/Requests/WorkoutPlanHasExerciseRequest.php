@@ -15,7 +15,7 @@ class WorkoutPlanHasExerciseRequest extends FormRequest
     {
         return [
             'workout_plan_id' => 'required|exists:workout_plans,id',
-            'exercise_id' => 'required|exists:exercises,id',
+            'name' => 'required|string|max:255',
             'sets' => 'required|integer|min:1',
             'repetitions' => 'required|integer|min:1',
             'load' => 'nullable|numeric|min:0',
