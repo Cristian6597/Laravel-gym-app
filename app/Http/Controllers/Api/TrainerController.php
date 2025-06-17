@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\TrainerRequest;
 use App\Http\Resources\TrainerResource;
 use App\Models\Trainer;
+use App\Models\User;
 use App\Services\TrainerService;
 use Illuminate\Http\Request;
 
@@ -27,17 +28,38 @@ class TrainerController extends Controller
      */
     public function store(TrainerRequest $request)
     {
-        // Prendi i dati validati
-        $data = $request->validated();
+        // Recupera l'utente autenticato
+        $user = $request->user();
 
-        // Aggiungi user_id dall'utente loggato
-        $data['user_id'] = auth()->id();
+        // Controlla se l'utente è già un trainer
+        if (Trainer::where('user_id', $user->id)->exists()) {
+            return response([
+                'message' => 'Utente è già un trainer.',
+                'errors' => ['user_id' => ['L\'utente è già un trainer.']]
+            ], 422);
+        }
 
         // Crea il trainer
-        $trainer = Trainer::create($data);
+        $trainer = Trainer::create([
+            'user_id'          => $user->id,
+            'phone'            => $request->input('phone'),
+            'birth_date'       => $request->input('birth_date'),
+            'specialty'        => $request->input('specialty'),
+            'bio'              => $request->input('bio'),
+            'certifications'   => $request->input('certifications'),
+            'years_experience' => $request->input('years_experience'),
+        ]);
 
-        return response()->json($trainer, 201);
+        // Dopo aver creato il trainer, aggiorna il ruolo dell'utente
+        $user->role = 'trainer';
+        $user->save();
+
+        return response([
+            'message' => 'Trainer creato con successo.',
+            'trainer' => $trainer
+        ], 201);
     }
+
 
     /**
      * Display the specified resource.
