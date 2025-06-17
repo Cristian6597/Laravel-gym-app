@@ -27,8 +27,16 @@ class TrainerController extends Controller
      */
     public function store(TrainerRequest $request)
     {
-        $trainer = $this->trainerService->create($request);
-        return new TrainerResource($trainer);
+        // Prendi i dati validati
+        $data = $request->validated();
+
+        // Aggiungi user_id dall'utente loggato
+        $data['user_id'] = auth()->id();
+
+        // Crea il trainer
+        $trainer = Trainer::create($data);
+
+        return response()->json($trainer, 201);
     }
 
     /**
