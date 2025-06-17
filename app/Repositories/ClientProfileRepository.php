@@ -7,8 +7,8 @@ use App\Models\ClientProfile;
 
 class ClientProfileRepository
 {
-
-    public function save(Request $request)
+v
+    public function sae(Request $request)
     {
         $clientProfile = $request->user()->ClientProfiles()->create($request->except('image', 'tags'));
 

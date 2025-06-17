@@ -23,9 +23,6 @@ class TrainerRequest extends FormRequest
     {
         return [
             'user_id' => 'required|exists:users,id',
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'email' => 'required|email|unique:trainers,email,',
             'phone' => 'nullable|string|max:20',
             'birth_date' => 'nullable|date',
             'specialty' => 'nullable|string|max:255',
