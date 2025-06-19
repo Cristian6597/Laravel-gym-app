@@ -1,15 +1,16 @@
-#!/bin/bash
+#!/usr/bin/env bash
+echo "Running composer"
 
-# Install PHP dependencies
-composer install --no-dev --optimize-autoloader
+composer install --no-dev --working-dir=/var/www/html
 
-# Caching
+echo "Caching config..."
 php artisan config:cache
+
+echo "Caching routes..."
 php artisan route:cache
-php artisan view:cache
 
-# Run migrations
+echo "Publishing cloudinary provider..."
+php artisan vendor:publish --provider="CloudinaryLabs\CloudinaryLaravel\CloudinaryServiceProvider" --tag="cloudinary-laravel-config"
+
+echo "Running migrations..."
 php artisan migrate --force
-
-# Serve Laravel app
-php artisan serve --host=0.0.0.0 --port=10000
