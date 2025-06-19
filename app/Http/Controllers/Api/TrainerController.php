@@ -67,8 +67,16 @@ class TrainerController extends Controller
      */
     public function show(string $id)
     {
-        $trainer = Trainer::findOrFail($id);
-        return new TrainerResource($trainer);
+        $trainer = Trainer::where('user_id', $id)->with('user')->first();
+
+        if (!$trainer) {
+            return response()->json(['error' => 'Trainer not found'], 404);
+        }
+
+        return response()->json([
+            'profile' => $trainer,
+            'user' => $trainer->user,
+        ]);
     }
 
     /**

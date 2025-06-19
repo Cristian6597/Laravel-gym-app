@@ -64,4 +64,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(WorkoutPlan::class, 'client_id');
     }
+    public function clients()
+    {
+        return $this->hasMany(User::class, 'nutritionist_id');
+        // oppure la relazione corretta che avete in DB
+    }
 }

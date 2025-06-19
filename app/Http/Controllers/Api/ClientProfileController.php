@@ -17,13 +17,22 @@ class ClientProfileController extends Controller
             return response()->json(['message' => 'Unauthorized'], 403);
         }
 
-        $profile = ClientProfile::where('user_id', $id)->first();
+        // Carica il profilo insieme all'utente associato
+        $profile = ClientProfile::with('user')->where('user_id', $id)->first();
 
         if (!$profile) {
             return response()->json(['message' => 'Profile not found'], 404);
         }
 
-        return response()->json($profile);
+        // Prepara la risposta includendo il profilo e i dati utente principali
+        return response()->json([
+            'profile' => $profile,
+            'user' => [
+                'first_name' => $profile->user->first_name,
+                'last_name' => $profile->user->last_name,
+                'email' => $profile->user->email,
+            ],
+        ]);
     }
     // Crea un nuovo profilo per l'utente autenticato
     public function store(Request $request)

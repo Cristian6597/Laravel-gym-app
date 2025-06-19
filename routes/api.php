@@ -3,9 +3,11 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ClientProfileController;
 use App\Http\Controllers\Api\ExerciseController;
+use App\Http\Controllers\Api\MessageController;
 use App\Http\Controllers\Api\TrainerController;
 use App\Http\Controllers\Api\WorkoutPlanController;
 use App\Http\Controllers\Api\WorkoutPlanHasExerciseController;
+use App\Http\Controllers\PersonalRecordController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Hash;
@@ -30,7 +32,7 @@ Route::prefix('auth')->controller(AuthController::class)->group(function () {
     });
 });
 
-Route::apiResource('clients', ClientProfileController::class)->middleware('auth:sanctum');
+Route::apiResource('client-profiles', ClientProfileController::class)->middleware('auth:sanctum');
 Route::apiResource('exercises', ExerciseController::class)->middleware('auth:sanctum');
 Route::apiResource('trainers', TrainerController::class)->middleware('auth:sanctum');
 Route::apiResource('workout-plans', WorkoutPlanController::class);
@@ -52,4 +54,19 @@ Route::get('/users', function (Request $request) {
 });
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/client-profiles/{id}', [ClientProfileController::class, 'show']);
+});
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/client-profiles/{id}', [ClientProfileController::class, 'show']);
+
+    // Chat
+    Route::get('/messages/my-clients', [MessageController::class, 'myClients']);
+    Route::get('/messages/{receiver}', [MessageController::class, 'getMessages']);
+    Route::post('/messages/send', [MessageController::class, 'sendMessage']);
+});
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/personal-records', [PersonalRecordController::class, 'index']);
+    Route::post('/personal-records', [PersonalRecordController::class, 'store']);
+    Route::put('/personal-records/{id}', [PersonalRecordController::class, 'update']);
+    Route::delete('/personal-records/{id}', [PersonalRecordController::class, 'destroy']);
 });
