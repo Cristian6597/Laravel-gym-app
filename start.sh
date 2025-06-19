@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-echo "Running composer"
 
+echo "Running composer"
 composer install --no-dev --working-dir=/var/www/html
 
 echo "Caching config..."
@@ -14,3 +14,9 @@ php artisan vendor:publish --provider="CloudinaryLabs\CloudinaryLaravel\Cloudina
 
 echo "Running migrations..."
 php artisan migrate --force
+
+echo "Starting php-fpm..."
+php-fpm &
+
+echo "Starting nginx..."
+nginx -g "daemon off;"
