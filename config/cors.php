@@ -2,7 +2,7 @@
 
 return [
 
-    'paths' => ['api/*', 'register', 'login', 'sanctum/csrf-cookie', 'workout-plans', 'workout-plans/*', 'trainers', 'trainers/*', 'exercises', 'exercises/*', 'clients', 'clients/*'],
+    'paths' => ['api/*', 'register', 'login', 'sanctum/csrf-cookie', 'workout-plans', 'workout-plans/*', 'trainers', 'trainers/*', 'exercises', 'exercises/*', 'clients', 'clients/*', 'client-profiles', 'client-profiles/*', 'edit_client_profile', 'edit_client_profile/*'],
 
     'allowed_methods' => ['*'],
 

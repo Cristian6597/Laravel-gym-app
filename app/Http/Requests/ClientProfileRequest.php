@@ -27,7 +27,7 @@ class ClientProfileRequest extends FormRequest
             'user_id' => 'required|exists:users,id',
             'trainer_id' => 'required|exists:users,id',
             'birth_date' => 'nullable|date',
-            'gender' => 'nullable|in:M,F,Other',
+            'gender' => 'nullable|string|max:300',
             'height_cm' => 'nullable|integer',
             'weight_kg' => 'nullable|numeric',
             'fitness_goals' => 'nullable|string',

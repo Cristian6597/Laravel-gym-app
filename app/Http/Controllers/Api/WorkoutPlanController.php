@@ -17,10 +17,29 @@ class WorkoutPlanController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
-        return WorkoutPlan::all();
+        $user = auth()->user();
+
+        // Se è un client, mostra solo i suoi piani
+        if ($user->role === 'client') {
+            return WorkoutPlan::where('client_id', $user->id)->with('trainer:id,first_name,last_name')->get();
+        }
+
+        // Se è un trainer, mostra quelli creati da lui
+        if ($user->role === 'trainer') {
+            return WorkoutPlan::where('trainer_id', $user->id)->with('client:id,first_name,last_name')->get();
+        }
+
+        // Admin: tutto
+        return WorkoutPlan::with(['trainer:id,first_name,last_name', 'client:id,first_name,last_name'])->get();
     }
+
+    public function show($id)
+    {
+        return WorkoutPlan::with('exercises')->findOrFail($id);
+    }
+
 
     /**
      * Store a newly created resource in storage.
@@ -42,11 +61,6 @@ class WorkoutPlanController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-        $workoutPlan = WorkoutPlan::findOrFail($id);
-        return new WorkoutPlanResource($workoutPlan);
-    }
 
     /**
      * Update the specified resource in storage.

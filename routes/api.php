@@ -34,6 +34,7 @@ Route::apiResource('clients', ClientProfileController::class)->middleware('auth:
 Route::apiResource('exercises', ExerciseController::class)->middleware('auth:sanctum');
 Route::apiResource('trainers', TrainerController::class)->middleware('auth:sanctum');
 Route::apiResource('workout-plans', WorkoutPlanController::class);
+
 Route::post('workout-plans/{workout_plan}/exercises', [WorkoutPlanHasExerciseController::class, 'store']);
 Route::get('/users', function (Request $request) {
     $role = $request->query('role');
@@ -48,4 +49,7 @@ Route::get('/users', function (Request $request) {
     $users = $query->select('id', 'first_name', 'last_name')->get();
 
     return response()->json($users);
+});
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/client-profiles/{id}', [ClientProfileController::class, 'show']);
 });

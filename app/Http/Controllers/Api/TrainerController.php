@@ -19,8 +19,9 @@ class TrainerController extends Controller
      */
     public function index(Request $request)
     {
-
-        return Trainer::all();
+        return Trainer::with(['user' => function ($query) {
+            $query->select('id', 'first_name', 'last_name'); // Seleziona solo i campi necessari
+        }])->get();
     }
 
     /**
